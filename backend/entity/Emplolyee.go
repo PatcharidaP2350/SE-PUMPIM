@@ -7,37 +7,39 @@ import (
 
 type Employee struct {
 	gorm.Model
-	FirstName          string
-	LastName           string
-	Age                uint
-	DateOfBirth        time.Time
-	Email              string
-	Phone              string
-	Address            string
-	Username           string  
-	ProfessionalLicense string 
-	CongenitalDisease  string  
-	Graduate           string  
+	FirstName           string            `json:"first_name"`
+	LastName            string            `json:"last_name"`
+	DateOfBirth         time.Time         `json:"date_of_birth"`
+	Email               string            `json:"email"`
+	Phone               string            `json:"phone"`
+	Address             string            `json:"address"`
+	Username            string            `json:"username"`
+	ProfessionalLicense string            `json:"professional_license"`
+	Graduate            string            `json:"graduate"`
+	NationalID          string            `json:"national_id"`
+	InfoConfirm         bool              `json:"info_confirm"`
 
-	// Foreign Keys and Relationships
-	// GenderID     uint       
-	// Gender       Gender     `gorm:"foreignKey:GenderID"`
+	GenderID   uint   `json:"gender_id"`
+	Gender     Gender `gorm:"foreignKey:GenderID"`
 
-	// PositionID   uint       
-	// Position     Position   `gorm:"foreignKey:PositionID"`
+	PositionID uint     `json:"position_id"`
+	Position   Position `gorm:"foreignKey:PositionID"`
 
-	// DepartmentID uint       
-	// Department   Department `gorm:"foreignKey:DepartmentID"`
+	DepartmentID uint       `json:"department_id"`
+	Department   Department `gorm:"foreignKey:DepartmentID"`
 
-	// StatusID     uint       
-	// Status       Status     `gorm:"foreignKey:StatusID"`
+	StatusID uint   `json:"status_id"`
+	Status   Status `gorm:"foreignKey:StatusID"`
 
-	// SpecialistID uint       
-	// Specialist   Specialist `gorm:"foreignKey:SpecialistID"`
+	SpecialistID uint       `json:"specialist_id"`
+	Specialist   Specialist `gorm:"foreignKey:SpecialistID"`
 
-	// Profile      string     `gorm:"type:longtext"`
-	// Password     string
+	BloodGroupID uint        `json:"blood_group_id"`
+	BloodGroup   BloodGroup  `gorm:"foreignKey:BloodGroupID"`
 
-	// New Relationship with MedicalRecord
-	MedicalRecords []MedicalRecord `gorm:"foreignKey:DoctorID"`  // One-to-many relationship with MedicalRecord
+	// Many-to-Many relationship with Disease
+	Diseases []Disease `gorm:"many2many:employee_diseases;" json:"diseases"`
+
+	Profile  string `json:"profile" gorm:"type:longtext"`
+	Password string `json:"password"`
 }
