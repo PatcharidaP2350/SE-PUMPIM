@@ -10,7 +10,7 @@ export interface IPatient {
     PhoneNumber?: string;       // เบอร์โทรศัพท์
     GenderID?: number;          // รหัสเพศ
     BloodGroupID?: number;      // รหัสกรุ๊ปเลือด
+    AllergyInfo?: string;       // ข้อมูลการแพ้
     Diseases?: number[];        // ID ของโรคที่ผู้ป่วยมี
-    // TakeAHistorys?: ITakeAHistory[]; // รายการบันทึกการรักษา (ถ้ามี)
   }
   

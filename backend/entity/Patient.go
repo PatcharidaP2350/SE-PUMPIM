@@ -15,11 +15,16 @@ type Patient struct {
     PhoneNumber     string       `json:"phone_number"`     
     GenderID        uint         `json:"gender_id"`
     BloodGroupID    uint         `json:"blood_group_id"`
-    AllergyInfo    string        `json:"allergy_info"`
+    PatientPicture  *string         `json:"patient_picture"` // ฟิลด์ใหม่สำหรับเก็บรูปภาพ
     // PatientDiseases []PatientDisease `gorm:"foreignKey:PatientID" `
     Diseases []Disease `gorm:"many2many:patient_diseases;" json:"diseases"`
 
     Gender     Gender     `gorm:"foreignKey:GenderID"`
     BloodGroup BloodGroup `gorm:"foreignKey:BloodGroupID"`
+
+    TakeAHistorys  []TakeAHistory `gorm:"foreignKey:PatientID"` 
+
+    // Many-to-Many relationship with Drug
+	Drug []Drug `gorm:"many2many:patient_drug;" json:"drug"`
     
 }

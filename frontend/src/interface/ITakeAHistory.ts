@@ -1,7 +1,9 @@
 export interface ITakeAHistory {
     ID?: number; // ID อาจไม่จำเป็นต้องกำหนดในตอนสร้าง
+    PatientID: number;
+    EmployeeID: number;
     WEIGHT: number; // น้ำหนัก
-    HEIGHT: number; // ส่วนสูง
+    HIGHT: number; // ส่วนสูง
     PRELIMINARY_SYMPTOMS: string; // อาการเบื้องต้น
     SYSTOLIC_BLOOD_PRESSURE: number; // ความดันโลหิตช่วงบน
     DIASTOLIC_BLOOD_PRESSURE: number; // ความดันโลหิตช่วงล่าง
@@ -10,8 +12,7 @@ export interface ITakeAHistory {
     DRINK_ALCOHOL: string; // การดื่มแอลกอฮอล์
     DATE: Date; // วันที่บันทึก
     LAST_MENSTRUATION_DATE: Date; // วันที่มีประจำเดือนครั้งสุดท้าย
-  
-    // MEDICAL_RECORD_ID?: number | null; // ID ของ MedicalRecord
+    MEDICAL_RECORD_ID?: number | null; // ID ของ MedicalRecord
     // MEDICAL_RECORD?: IMedicalRecords | null; // ความสัมพันธ์กับ MedicalRecords
   }
   

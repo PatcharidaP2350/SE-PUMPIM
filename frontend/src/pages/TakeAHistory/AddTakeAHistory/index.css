@@ -1,0 +1,60 @@
+/* AddTakeAHistory.css */
+.layout-container {
+    min-height: 100vh;
+    background-color: #646464;
+  }
+  
+  .sider {
+    background-color: #C4A4E7; /* สีม่วงอ่อน */
+    width: 250px;
+  }
+  
+  .content {
+    margin: 24px 16px 0;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 24px;
+    background-color: #ffffff; /* สีพื้นหลังของ Content */
+    border-radius: 12px;
+  }
+
+  .content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #646464;  /* พื้นหลังสีเทา */
+    z-index: -1;  /* วางไว้ข้างหลังเนื้อหาของ Content */
+  }
+  
+  .header {
+    padding: 0 24px;
+    background-color: #646464;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 12px 0;
+    background-color: #646464;
+  }
+  
+  .button {
+    margin: 8px;
+    padding: 10px;
+    background-color: #5752A7; /* สีม่วง */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #463a92; /* สีม่วงเข้ม */
+  }
+  
