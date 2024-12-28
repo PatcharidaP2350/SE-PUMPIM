@@ -38,19 +38,21 @@ func main() {
 		protected.POST("/patients", controller.CreatePatient)
 		// เส้นทาง GetPatient
 		protected.GET("/patients/:id", controller.GetPatient) // เพิ่มเส้นทาง GetPatient
+		protected.GET("/patient/:nation_id", controller.GetPatientbyNationID) // เพิ่มเส้นทาง GetPatient
 		// เส้นทาง ListPatient
 		protected.GET("/patients", controller.ListPatient) // เพิ่มเส้นทาง ListPatient
 		// เส้นทาง DeletePatient
 		protected.DELETE("/patients/:id", controller.DeletePatient) // เพิ่มเส้นทาง DeletePatient
 		// เส้นทาง UpdatePatient
 		protected.PATCH("/patients/:id", controller.UpdatePatient) // เพิ่มเส้นทาง UpdatePatient
+		protected.PATCH("/updatepatiendisease", controller.UpdatePatientDisease)
 
-		// เส้นทาง CreateQueue
-		protected.POST("/queues", controller.CreateQueue)
-		// เส้นทาง GetQueue
-		protected.GET("/queues/:id", controller.GetQueue)
-		// เส้นทาง ListQueue
-		protected.GET("/queues", controller.ListQueue)
+		// // เส้นทาง CreateQueue
+		// protected.POST("/queues", controller.CreateQueue)
+		// // เส้นทาง GetQueue
+		// protected.GET("/queues/:id", controller.GetQueue)
+		// // เส้นทาง ListQueue
+		// protected.GET("/queues", controller.ListQueue)
 
 		// เส้นทาง CreateTakeAHistory
 		protected.POST("/take_a_history", controller.CreateTakeAHistory)
@@ -62,6 +64,12 @@ func main() {
 		protected.PATCH("/take_a_history/:id", controller.UpdateTakeAHistory)
 		// เส้นทาง DeleteTakeAHistory
 		protected.DELETE("/take_a_history/:id", controller.DeleteTakeAHistory) // เพิ่มเส้นทาง DeleteTakeAHistory
+
+		protected.GET("/patient_visit", controller.GetPatientVisit)
+
+		protected.GET("/diseases", controller.ListDiseases)
+		protected.GET("/drugs", controller.GetAllDrugs)
+
 
 
 	}

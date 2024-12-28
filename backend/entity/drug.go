@@ -34,7 +34,5 @@ type Drug struct {
 
     DrugImage        string   // รูปภาพของยา
     Barcode          string   // รหัสบาร์โค้ด
-
     Patient   []Patient `gorm:"many2many:patient_drug;" json:"patient"` // Many-to-Many relationship with Pateint
-
 }

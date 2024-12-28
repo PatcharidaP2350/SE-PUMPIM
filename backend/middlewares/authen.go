@@ -3,15 +3,27 @@ package middlewares
 import (
     "net/http"
     "strings"
+    "SE-B6527075/entity"
     "SE-B6527075/services"
     "SE-B6527075/config" // นำเข้า config เพื่อใช้คีย์ลับ
     "github.com/gin-gonic/gin"
     "fmt" // นำเข้า fmt สำหรับการพิมพ์ข้อความ
+    "time" // สำหรับการจัดการเวลา
 )
 
 // Authorizes เป็นฟังก์ชันตรวจเช็คโทเค็น
-func Authorizes() gin.HandlerFunc {
+func Authorizes2() gin.HandlerFunc {
     return func(c *gin.Context) {
+        var loginData struct {
+            ID string `json:"id"`
+            
+        }
+        
+
+        if err := c.ShouldBindJSON(&loginData); err != nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+            return
+        }
         // รับค่า Authorization header
         clientToken := c.Request.Header.Get("Authorization")
 
@@ -21,6 +33,8 @@ func Authorizes() gin.HandlerFunc {
             c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "No Authorization header provided"})
             return
         }
+
+        
 
         // ตรวจสอบรูปแบบของโทเค็น
         if !strings.HasPrefix(clientToken, "Bearer ") {
@@ -38,15 +52,61 @@ func Authorizes() gin.HandlerFunc {
             Issuer:    "AuthService",
         }
 
-        // ตรวจสอบความถูกต้องของโทเค็น
-        _, err := jwtWrapper.ValidateToken(clientToken)
+        // ตรวจสอบความถูกต้องของโทเค็นและดึงข้อมูล Expiration (exp)
+        claims, err := jwtWrapper.ValidateToken(clientToken)
         if err != nil {
             fmt.Printf("Token validation error: %v\n", err) // พิมพ์ข้อผิดพลาดที่เกิดขึ้น
             c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
             return
         }
 
-        fmt.Println("Token validated successfully") // พิมพ์เมื่อโทเค็นถูกต้อง
+        // ดึง ID จาก claims ของ JWT
+        userId := loginData.ID // ค่าของ ID จากโทเค็น
+
+        db := config.DB()
+        var employee entity.Employee
+
+        if err := db.Preload("Position").Preload("Department").Preload("Status").Where("id = ?", loginData.ID).First(&employee).Error; err != nil {
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+            c.Abort()
+            return
+        }
+
+        // ค้นหาผู้ใช้ตาม ID และ preload ข้อมูล
+        if err := db.Model(&entity.Employee{}).Where("id = ?", userId).Select("status_id").First(&employee).Error; err != nil {
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+            c.Abort()
+            return
+        }
+
+        
+        // ตรวจสอบสถานะผู้ใช้
+        if employee.Status.StatusName != "Active" {
+            c.JSON(http.StatusForbidden, gin.H{"error": "User account is not active"})
+            c.Abort()
+            return
+        }
+
+        // ดึงเวลาหมดอายุ (exp) ของโทเค็น
+        expTime := time.Unix(claims.ExpiresAt, 0)
+        timeRemaining := expTime.Sub(time.Now())
+
+        if timeRemaining <= 0 {
+            fmt.Println("Token has expired") // พิมพ์ข้อความเมื่อโทเค็นหมดอายุ
+            c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Token has expired"})
+            return
+        }
+
+        // แสดงเวลาที่เหลือ
+        fmt.Printf("Token is valid. Time remaining: %v\n", timeRemaining)
+
+        // ส่งข้อมูลเวลาหมดอายุใน response body เป็น JSON
+        c.JSON(http.StatusOK, gin.H{
+            "message":            "Token validated successfully",
+            "time_remaining":     timeRemaining.String(),
+            "expires_at":         expTime.Format(time.RFC3339),
+        })
+
         c.Next() // ถ้าโทเค็นถูกต้องให้ดำเนินการต่อไป
     }
 }

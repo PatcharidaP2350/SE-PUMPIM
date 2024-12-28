@@ -1,89 +1,258 @@
-import { IPatient } from "../../interface/IPatient";
+import axios from "axios";
+import { PatientInterface } from "../../interface/IPatient";
+import { Iupdatepatientdisease, TakeAHistoryInterface } from "../../interface/ITakeAHistory";
 
-const apiUrl = "http://localhost:8000"; // URL ของ Backend API
+export const apiUrl = "http://localhost:8000"; // URL ของ Backend API
+const Authorization = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6ImRvY3RvciIsImV4cCI6MTczNTQ0NTM4NiwiaXNzIjoiQXV0aFNlcnZpY2UifQ.B9SadsafOT0azQSHmQDmMWA1Y_BINAZABpQO3Rm5fGY");
+const Bearer = localStorage.getItem("token_type");
+
+
+const requestOptions = {
+
+  headers: {
+
+    "Content-Type": "application/json",
+
+    Authorization: `Bearer ${Authorization}`,
+
+  },
+
+};
 
 
 // ฟังก์ชันสำหรับดึง token จาก localStorage
 function getAuthHeaders() {
-    const token = localStorage.getItem("authToken");
     return {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${Authorization}`,
     };
   }
 
-
 // ฟังก์ชันสำหรับบันทึกข้อมูลผู้ป่วย
-async function createPatient(patient: IPatient) {
-    console.log("----------CreatePatient----------");
-    const requestOptions = {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify(patient),
-      };
-  
-    const response = await fetch(`${apiUrl}/patients`, requestOptions) // ใช้ apiUrl ที่กำหนดไว้ด้านบน
-      .then(async (response) => {
-        const data = await response.json(); // อ่านข้อมูล JSON ที่ Backend ตอบกลับมา
-        return { status: response.status, data }; // รวม status และ data
-      })
-      .catch((error) => {
-        console.error("Error creating patient:", error); // จัดการข้อผิดพลาด
-        return { status: null, data: null }; // กรณีเกิดข้อผิดพลาด
-      });
-  
-    return response; // คืนค่าผลลัพธ์ {status, data}
+async function CreatePatient(data: PatientInterface) {
+
+  return await axios
+
+    .post(`${apiUrl}/patients`, data, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
 }
 
 
 // ฟังก์ชันสำหรับดึงข้อมูลผู้ป่วยตาม ID
-async function getPatientByid(id: string) {
-  const requestOptions = {
-    method: "GET",
-    headers: getAuthHeaders(),
-  };
+async function GetPatientById(id: number) {
 
- // ดึงข้อมูลผู้ป่วยจาก API
-  const response = await fetch(`${apiUrl}/patients/${id}`, requestOptions);
+  return await axios
 
-  // ตรวจสอบสถานะของคำตอบจาก API
-  if (response.status === 200) {
-    const data: IPatient = await response.json(); // อ่านข้อมูล JSON ของผู้ป่วย
-    return data; // คืนค่าข้อมูลผู้ป่วย
-  } else {
-    console.error(`Failed to fetch patient with ID: ${id}`); // ถ้าหากสถานะไม่ใช่ 200
-    return false; // คืนค่า false หากไม่พบผู้ป่วย
-  }
+    .get(`${apiUrl}/patients/${id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+async function GetPatientByNationId(nation_id: string) {
+
+  return await axios
+
+    .get(`${apiUrl}/patient/${nation_id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+async function ListPatients() {
+
+  return await axios
+
+    .get(`${apiUrl}/patients`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
 }
 
 
+async function DeletePatientByid(id: number) {
 
+  return await axios
+
+    .delete(`${apiUrl}/patients/${id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
 
 
 // ฟังก์ชันสำหรับอัปเดตข้อมูลผู้ป่วยบางฟิลด์
-async function updatePatient(id: string, updates: Partial<IPatient>) {
-  const requestOptions = {
-    method: "PATCH",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(updates),
-  };
-  const response = await fetch(`${apiUrl}/patients/${id}`, requestOptions)
-      .then(async (response) => {
-          const data = await response.json(); // อ่านข้อมูล JSON ที่ Backend ตอบกลับมา
-          return { status: response.status, data }; // รวม status และ data
-      })
-      .catch((error) => {
-          console.error(`Error updating patient with ID: ${id}`, error); // จัดการข้อผิดพลาด
-          return { status: null, data: null }; // กรณีเกิดข้อผิดพลาด
-      });
+async function UpdatePatientById(id: number, data: PatientInterface) {
 
-  return response; // คืนค่าผลลัพธ์ {status, data}
+  return await axios
+
+    .put(`${apiUrl}/patients/${id}`, data, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
 }
+
+
+// ฟังก์ชัน async สำหรับการสร้าง TakeAHistory
+async function CreateTakeAHistory(data: TakeAHistoryInterface) {
+  console.log("AAA",data)
+  return await axios
+
+    .post(`${apiUrl}/take_a_history`, data, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+async function ListTakeAHistory() {
+
+  return await axios
+
+    .get(`${apiUrl}/take_a_history`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+
+// ฟังก์ชันสำหรับดึงข้อมูลผู้ป่วยตาม ID
+async function GetTakeAHistoryById(id: number) {
+
+  return await axios
+
+    .get(`${apiUrl}/take_a_history/${id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+
+// ฟังก์ชันสำหรับอัปเดตข้อมูลผู้ป่วยบางฟิลด์
+async function UpdateTakeAHistoryById(id: number, data: PatientInterface) {
+
+  return await axios
+
+    .put(`${apiUrl}/take_a_history/${id}`, data, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+
+async function DeleteTakeAHistoryByid(id: number) {
+
+  return await axios
+
+    .delete(`${apiUrl}/take_a_history/${id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+
+async function GetPatientVisit() {
+
+  return await axios
+
+    .get(`${apiUrl}/patient_visit`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
+
+async function getDurg() {
+  const requestOptions = {
+    //method: "GET",
+    headers: getAuthHeaders(),
+  };
+  return await axios
+
+  .get(`${apiUrl}/drugs`, requestOptions)
+
+  .then((res) => res)
+
+  .catch((e) => e.response);
+
+}
+
+async function getDiseases() {
+  const requestOptions = {
+    //method: "GET",
+    headers: getAuthHeaders(),
+  };
+  return await axios
+
+  .get(`${apiUrl}/diseases`, requestOptions)
+
+  .then((res) => res)
+
+  .catch((e) => e.response);
+}
+
+
+async function updatePatientDisease(data:Iupdatepatientdisease) {
+  const requestOptions = {
+    //method: "GET",
+    headers: getAuthHeaders(),
+  };
+  return await axios
+
+  .patch(`${apiUrl}/updatepatiendisease`, data, requestOptions)
+
+  .then((res) => res)
+
+  .catch((e) => e.response);
+}
+
+
+
+
+
 
 export {
     getAuthHeaders,
-    createPatient,
-    getPatientByid,
-    updatePatient,
-  
+    CreatePatient,
+    GetPatientById,
+    GetPatientByNationId,
+    ListPatients,
+    DeletePatientByid,
+    UpdatePatientById,
+    CreateTakeAHistory,
+    ListTakeAHistory,
+    GetTakeAHistoryById,
+    UpdateTakeAHistoryById,
+    DeleteTakeAHistoryByid,
+    GetPatientVisit,
+    updatePatientDisease,
+
+
+    getDurg,
+    getDiseases,
+
 };

@@ -1,0 +1,32 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ant-form-item {
+  width: 100%;
+  margin-left: 50px;
+  margin-bottom: 30px !important; /* เพิ่มระยะห่างทุก Input */
+}
+.ant-form-item-label > label {
+  color: #5752A7 !important;
+}
+/* .header-options {
+  margin-right: 20px;
+  margin-bottom: -50px;
+
+} */
+
+.input-box {
+  width: 20%; 
+  margin-right: -100px;
+  margin-left: -30px;
+  margin-bottom: 0px; 
+  padding: 0px; 
+  border-radius: 10px; 
+  border: 1px solid #ccc;
+}
+
+

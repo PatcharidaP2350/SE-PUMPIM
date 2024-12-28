@@ -1,18 +1,26 @@
-export interface ITakeAHistory {
-    ID?: number; // ID อาจไม่จำเป็นต้องกำหนดในตอนสร้าง
-    PatientID: number;
-    EmployeeID: number;
-    WEIGHT: number; // น้ำหนัก
-    HIGHT: number; // ส่วนสูง
-    PRELIMINARY_SYMPTOMS: string; // อาการเบื้องต้น
-    SYSTOLIC_BLOOD_PRESSURE: number; // ความดันโลหิตช่วงบน
-    DIASTOLIC_BLOOD_PRESSURE: number; // ความดันโลหิตช่วงล่าง
-    PULSE_RATE: number; // อัตราชีพจร
-    SMOKING: string; // การสูบบุหรี่
-    DRINK_ALCOHOL: string; // การดื่มแอลกอฮอล์
-    DATE: Date; // วันที่บันทึก
-    LAST_MENSTRUATION_DATE: Date; // วันที่มีประจำเดือนครั้งสุดท้าย
-    MEDICAL_RECORD_ID?: number | null; // ID ของ MedicalRecord
-    // MEDICAL_RECORD?: IMedicalRecords | null; // ความสัมพันธ์กับ MedicalRecords
-  }
-  
+export interface TakeAHistoryInterface {
+  ID?: number; // ID อาจไม่จำเป็นต้องกำหนดในตอนสร้าง
+  weight?: number; // น้ำหนัก
+  height?: number; // ส่วนสูง
+  preliminary_symptoms?: string; // อาการเบื้องต้น
+  systolic_blood_pressure?: number; // ความดันโลหิตช่วงบน
+  diastolic_blood_pressure?: number; // ความดันโลหิตช่วงล่าง
+  pulse_rate?: number; // อัตราชีพจร
+  smoking?: boolean; // การสูบบุหรี่
+  drink_alcohol?: boolean; // การดื่มแอลกอฮอล์ 
+  // DATE?: Date; // วันที่บันทึก
+  // QueueStatus?: string;
+  last_menstruation_date?: Date; // วันที่มีประจำเดือนครั้งสุดท้าย
+  patient_id?: number;
+  employee_id?: number;
+  appointment_id?: number;
+  disease_name?:  number;
+  // MedicalRecordsID?: number | null; // ID ของ MedicalRecord
+}
+
+
+export interface Iupdatepatientdisease{
+	id?:number;
+	patient_id?:number;
+	disease_id?:number[];
+}

@@ -1,5 +1,5 @@
 export interface IGender {
     ID?: number;
-    GenderName: string;
+    gender_name: string;
   }
   

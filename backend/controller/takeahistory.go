@@ -20,16 +20,20 @@ func CreateTakeAHistory(c *gin.Context) {
 	// กำหนดข้อมูลที่รับจาก Request
 	var input struct {
 		Weight                   float32    `json:"weight" binding:"required"`
-		Hight                    float32    `json:"hight" binding:"required"`
+		Height                    float32    `json:"height" binding:"required"`
 		PreliminarySymptoms      string     `json:"preliminary_symptoms" binding:"required"`
 		SystolicBloodPressure    uint       `json:"systolic_blood_pressure" binding:"required"`
 		DiastolicBloodPressure   uint       `json:"diastolic_blood_pressure" binding:"required"`
 		PulseRate                uint       `json:"pulse_rate" binding:"required"`
-		Smoking                  string     `json:"smoking" binding:"required"`
+		Smoking                  bool     `json:"smoking" binding:"required"`
+		DrinkAlcohol             bool     `json:"drink_alcohol" binding:"required"`
+		QueueNumber    string    `json:"queue_number" binding:"required"`  
+		//Date      time.Time    `json:"date" binding:"required"`     
+		QueueStatus         string    `json:"queue_status"  binding:"required"`
 		LastMenstruationDate     time.Time  `json:"last_menstruation_date" binding:"required"`
-		DrinkAlcohol             string     `json:"drink_alcohol" binding:"required"`
 		PatientID                uint       `json:"patient_id" binding:"required"`
 		EmployeeID               uint       `json:"employee_id" binding:"required"`
+		AppointmentID			 *uint     `json:"appointment_id"`
 	}
 
 	// ดึงข้อมูล JSON จากคำขอ (Request) และตรวจสอบความถูกต้อง
@@ -42,18 +46,22 @@ func CreateTakeAHistory(c *gin.Context) {
 	// สร้าง record ใหม่จากข้อมูลที่ได้รับ
 	take := entity.TakeAHistory{
 		Weight:                  input.Weight,
-		Hight:                   input.Hight,
+		Height:                   input.Height,
 		PreliminarySymptoms:     input.PreliminarySymptoms,
 		SystolicBloodPressure:   input.SystolicBloodPressure,
 		DiastolicBloodPressure:  input.DiastolicBloodPressure,
 		PulseRate:               input.PulseRate,
 		Smoking:                 input.Smoking,
-		LastMenstruationDate:    input.LastMenstruationDate,
 		DrinkAlcohol:            input.DrinkAlcohol,
-		Date:                    time.Now(),
+		LastMenstruationDate:    input.LastMenstruationDate,
+		QueueNumber: 			 input.QueueNumber,
+		QueueStatus:			input.QueueStatus,
+		
 		MedicalRecordsID:       nil, // ปรับเปลี่ยนตามความเหมาะสม
+		Date:                    time.Now(),
 		PatientID:               input.PatientID,
 		EmployeeID:              input.EmployeeID,
+		AppointmentID:		     input.AppointmentID,
 	}
 
 	// เริ่มต้นการเชื่อมต่อฐานข้อมูล
@@ -71,13 +79,18 @@ func CreateTakeAHistory(c *gin.Context) {
 }
 
 
-func ListTakeAHistory(c *gin.Context) {
+func ListTakeAHistory(c *gin.Context) {                   //----------------yes------------------//
     db := config.DB() // เรียกใช้การเชื่อมต่อฐานข้อมูลจาก config
 
     var takeAHistories []entity.TakeAHistory
 
-    // ดึงข้อมูลทั้งหมดจากฐานข้อมูล พร้อมกับ preload ความสัมพันธ์ที่เกี่ยวข้อง (เช่น Patient, Employee หรือ MedicalRecords ถ้ามี)
-    if err := db.Preload("Patient").Preload("Employee").Preload("MedicalRecords").Find(&takeAHistories).Error; err != nil {
+    // ดึงข้อมูลทั้งหมดจากฐานข้อมูล พร้อม preload ความสัมพันธ์
+    if err := db.
+        Preload("Patient").
+        Preload("Employee").
+        Preload("MedicalRecords").
+        Preload("Appointments").
+        Find(&takeAHistories).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve TakeAHistory", "details": err.Error()})
         return
     }
@@ -128,16 +141,19 @@ func UpdateTakeAHistory(c *gin.Context) {
 	// กำหนดโครงสร้างข้อมูลที่รับจาก Request
 	var input struct {
 		Weight                   *float32   `json:"weight"`
-		Hight                    *float32   `json:"hight"`
+		Height                    *float32   `json:"height"`
 		PreliminarySymptoms      *string    `json:"preliminary_symptoms"`
 		SystolicBloodPressure    *uint      `json:"systolic_blood_pressure"`
 		DiastolicBloodPressure   *uint      `json:"diastolic_blood_pressure"`
 		PulseRate                *uint      `json:"pulse_rate"`
-		Smoking                  *string    `json:"smoking"`
+		Smoking                  *bool    `json:"smoking"`
+		DrinkAlcohol             *bool     `json:"drink_alcohol"`
+		QueueNumber    *string    `json:"queue_number"`  
+		Date      *time.Time    `json:"date"`      
+		QueueStatus         *string    `json:"queue_status"`
 		LastMenstruationDate     *time.Time `json:"last_menstruation_date"`
-		DrinkAlcohol             *string    `json:"drink_alcohol"`
 	}
-
+ 
 	// ดึงข้อมูล JSON จากคำขอ (Request) และตรวจสอบความถูกต้อง
 	if err := c.ShouldBindJSON(&input); err != nil {
 		fmt.Println("Error binding JSON:", err)
@@ -149,8 +165,8 @@ func UpdateTakeAHistory(c *gin.Context) {
 	if input.Weight != nil {
 		take.Weight = *input.Weight
 	}
-	if input.Hight != nil {
-		take.Hight = *input.Hight
+	if input.Height != nil {
+		take.Height = *input.Height
 	}
 	if input.PreliminarySymptoms != nil {
 		take.PreliminarySymptoms = *input.PreliminarySymptoms
@@ -167,12 +183,14 @@ func UpdateTakeAHistory(c *gin.Context) {
 	if input.Smoking != nil {
 		take.Smoking = *input.Smoking
 	}
-	if input.LastMenstruationDate != nil {
-		take.LastMenstruationDate = *input.LastMenstruationDate
-	}
+
 	if input.DrinkAlcohol != nil {
 		take.DrinkAlcohol = *input.DrinkAlcohol
 	}
+	if input.LastMenstruationDate != nil {
+		take.LastMenstruationDate = *input.LastMenstruationDate
+	}
+
 
 	// บันทึกการเปลี่ยนแปลงลงฐานข้อมูล
 	if err := db.Save(&take).Error; err != nil {
@@ -214,4 +232,49 @@ func DeleteTakeAHistory(c *gin.Context) {
 
     // ส่งข้อความสำเร็จเมื่อลบข้อมูลเสร็จ
     c.JSON(http.StatusOK, gin.H{"message": "TakeAHistory deleted successfully"})
+}
+
+func UpdatePatientDisease(c *gin.Context) {
+	// รับ JSON จากคำขอ
+	var input struct {
+		PatientID uint   `json:"patient_id"` // ID ของผู้ป่วย
+		DiseaseID    []uint `json:"disease_id"`    // ID ของโรคที่ต้องการอัปเดต
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "คำขอไม่ถูกต้อง ไม่สามารถแปลง payload ได้"})
+		return
+	}
+  
+	db := config.DB()
+
+	// ตรวจสอบว่า DrugID ไม่เป็นค่าว่าง
+	if len(input.DiseaseID) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "กรุณาระบุยาอย่างน้อยหนึ่งรายการ"})
+		return
+	}
+
+	// Start a transaction to ensure atomicity
+	tx := db.Begin()
+
+	// ลบยาเก่าทั้งหมดสำหรับผู้ป่วย
+	if err := tx.Exec("DELETE FROM patient_diseases WHERE patient_id = ?", input.PatientID).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ไม่สามารถลบข้อมูลโรคได้"})
+		return
+	}
+
+	// เพิ่มยาใหม่ทั้งหมดสำหรับผู้ป่วย
+	for _, diseaseID := range input.DiseaseID {
+		if err := tx.Exec("INSERT INTO patient_diseases (patient_id, disease_id) VALUES (?, ?)", input.PatientID, diseaseID).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "ไม่สามารถเพิ่มโรคใหม่ได้"})
+			return
+		}
+	}
+
+	// Commit the transaction
+	tx.Commit()
+
+	c.JSON(http.StatusOK, gin.H{"message": "อัปเดตสำเร็จ"})
 }
