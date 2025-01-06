@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Form, Avatar} from 'antd';
-import './saveahistory.css'; // ไฟล์ CSS สำหรับการตกแต่ง
+import './createpatient.css'; // ไฟล์ CSS สำหรับการตกแต่ง
 import { useParams } from 'react-router-dom';
 import { TakeAHistoryInterface } from '../../../interface/ITakeAHistory';
 import { PatientInterface } from '../../../interface/IPatient';
-import { apiUrl,   GetPatientByNationId} from '../../../service/https';
+import { apiUrl,   CreatePatient,   GetPatientByNationId} from '../../../service/https';
 
 
 
-const SaveTakeAHistory: React.FC = () => {
+const AddPatient: React.FC = () => {
   const [form] = Form.useForm();
    
     const [patient, setPatient] = useState<PatientInterface | null>(null);
@@ -76,17 +76,6 @@ const SaveTakeAHistory: React.FC = () => {
         alignItems: 'center', 
         fontFamily: 'Arial, sans-serif' }}
         >
-      <div 
-        style={{ 
-          color: '#5752A7', 
-          fontSize: '24px', 
-          fontWeight: 'bold', 
-          marginBottom: '20px', 
-          textAlign: 'center', 
-          width: '100%' }}
-      >
-          ซักประวัติคนไข้
-      </div>
 
       {/* กล่องค้นหา */}
       <div 
@@ -255,4 +244,4 @@ const SaveTakeAHistory: React.FC = () => {
   );
 };
 
-export default SaveTakeAHistory;
+export default AddPatient;

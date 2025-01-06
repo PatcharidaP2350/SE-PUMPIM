@@ -3,8 +3,8 @@ import { PatientInterface } from "../../interface/IPatient";
 import { Iupdatepatientdisease, TakeAHistoryInterface } from "../../interface/ITakeAHistory";
 
 export const apiUrl = "http://localhost:8000"; // URL ของ Backend API
-const Authorization = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6ImRvY3RvciIsImV4cCI6MTczNTQ0NTM4NiwiaXNzIjoiQXV0aFNlcnZpY2UifQ.B9SadsafOT0azQSHmQDmMWA1Y_BINAZABpQO3Rm5fGY");
-const Bearer = localStorage.getItem("token_type");
+const Authorization = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6ImRvY3RvciIsImV4cCI6MTczNjI1NTM4NCwiaXNzIjoiQXV0aFNlcnZpY2UifQ.PNboPxfwgdXkJxBbMtN31R1T-qdH0GcO1GY0U-Sfsng");
+// const Bearer = localStorage.getItem("token_type");  //ถ้ายังไม่เซต localStorage จะดึง Disease ไม่ได้
 
 
 const requestOptions = {
