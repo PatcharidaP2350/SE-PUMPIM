@@ -9,9 +9,8 @@ import SaveTakeAHistory from './pages/TakeAHistory/SaveTakeAHistory/saveahistory
 
 
 
-
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AddTakeAHistory2/>
+  <StrictMode>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    <SaveTakeAHistory/>
   </StrictMode>
 )

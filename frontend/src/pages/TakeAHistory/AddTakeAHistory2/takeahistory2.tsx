@@ -115,16 +115,16 @@ const AddTakeAHistory2: React.FC = () => {
 
   console.log(patient?.Gender?.gender_name)
   return (
-    <Layout
-      className="AddTakeAHistory2"
-      style={{
-        height: "100vh",
-        backgroundColor: "#e2dfe4", // สีพื้นหลังของ Layout
-        margin: 0,
-        padding: 0,
-        width: "100%",
-      }}
-    >
+    <div
+    className="AddTakeAHistory2"
+    style={{
+      height: "100vh",
+      backgroundColor: "#e2dfe4", // สีพื้นหลังของหน้า
+      margin: 0,
+      padding: 0,
+      width: "100%",
+    }}
+  >
       <Header
         style={{
           backgroundColor: "#e2dfe4", // สีพื้นหลังของ Header
@@ -385,7 +385,7 @@ const AddTakeAHistory2: React.FC = () => {
 
         </div>
       </Content>
-    </Layout>
+    </div>
   );
 };
 

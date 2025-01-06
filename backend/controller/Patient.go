@@ -109,23 +109,23 @@ func GetPatient(c *gin.Context) {
 
 	// จัดรูปแบบข้อมูลเพื่อตอบกลับ
 	response := gin.H{
-		"id":              patient.ID,
-		"nation_id":       patient.NationID,
-		"first_name":      patient.FirstName,
-		"last_name":       patient.LastName,
-		"date_of_birth":   patient.DateOfBirth.Format("2006-01-02"), // แปลงวันที่
-		"address":         patient.Address,
-		"phone_number":    patient.PhoneNumber,
-		"gender": gin.H{
-			"id":   patient.Gender.ID,
-			"name": patient.Gender.GenderName,
+		"ID":              patient.ID,
+		"NationID":       patient.NationID,
+		"FirstName":      patient.FirstName,
+		"LastName":       patient.LastName,
+		"DateOfBirth":   patient.DateOfBirth.Format("2006-01-02"), // แปลงวันที่
+		"Address":         patient.Address,
+		"PhoneNumber":    patient.PhoneNumber,
+		"Gender": gin.H{
+			"gender_id":   patient.Gender.ID,
+			"gender_name": patient.Gender.GenderName,
 		},
-		"blood_group": gin.H{
-			"id":   patient.BloodGroup.ID,
-			"name": patient.BloodGroup.BloodGroup,
+		"BloodGroup": gin.H{
+			"blood_group_id":   patient.BloodGroup.ID,
+			"blood_group_name": patient.BloodGroup.BloodGroup,
 		},
-		"patient_picture": patient.PatientPicture, // สามารถเป็น nil ได้
-		"diseases": func() []gin.H {
+		"PatientPicture": patient.PatientPicture, // สามารถเป็น nil ได้
+		"Diseases": func() []gin.H {
 			var diseases []gin.H
 			for _, disease := range patient.Diseases {
 				diseases = append(diseases, gin.H{
@@ -135,7 +135,7 @@ func GetPatient(c *gin.Context) {
 			}
 			return diseases
 		}(),
-		"drugs": func() []gin.H {
+		"Drug": func() []gin.H {
 			var drugs []gin.H
 			for _, drug := range patient.Drug {
 				drugs = append(drugs, gin.H{
@@ -153,6 +153,66 @@ func GetPatient(c *gin.Context) {
 }
 
 
+func GetPatientbyNationID(c *gin.Context) {
+	var patient entity.Patient
+	nationID := c.Param("nation_id") // รับ nation_id จาก URL parameter
+
+	// ดึงข้อมูล Patient พร้อม Preload ความสัมพันธ์
+	db := config.DB()
+	if err := db.Preload("Gender").
+		Preload("BloodGroup").
+		Preload("Diseases").
+		Preload("Drug").
+		Where("nation_id = ?", nationID).
+		First(&patient).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Patient not found"})
+		return
+	}
+
+	// จัดรูปแบบข้อมูลเพื่อตอบกลับ
+	response := gin.H{
+		"ID":              patient.ID,
+		"NationID":       patient.NationID,
+		"FirstName":      patient.FirstName,
+		"LastName":       patient.LastName,
+		"DateOfBirth":   patient.DateOfBirth.Format("2006-01-02"), // แปลงวันที่
+		"Address":         patient.Address,
+		"PhoneNumber":    patient.PhoneNumber,
+		"Gender": gin.H{
+			"gender_id":   patient.Gender.ID,
+			"gender_name": patient.Gender.GenderName,
+		},
+		"BloodGroup": gin.H{
+			"blood_group_id":   patient.BloodGroup.ID,
+			"blood_group": patient.BloodGroup.BloodGroup,
+		},
+		"PatientPicture": patient.PatientPicture, // สามารถเป็น nil ได้
+		"Diseases": func() []gin.H {
+			var diseases []gin.H
+			for _, disease := range patient.Diseases {
+				diseases = append(diseases, gin.H{
+					"id":   disease.ID,
+					"name": disease.DiseaseName,
+				})
+			}
+			return diseases
+		}(),
+		"Drugs": func() []gin.H {
+			var drugs []gin.H
+			for _, drug := range patient.Drug {
+				drugs = append(drugs, gin.H{
+					"id":   drug.ID,
+					"name": drug.DrugName,
+				})
+			}
+			return drugs
+		}(),
+		"created_at": patient.CreatedAt,
+	}
+
+	// ส่งข้อมูลกลับ
+	c.JSON(http.StatusOK, response)
+}
 
 // ListPatient - ฟังก์ชันสำหรับดึงข้อมูลรายชื่อผู้ป่วยทั้งหมด
 func ListPatient(c *gin.Context) {
@@ -172,23 +232,23 @@ func ListPatient(c *gin.Context) {
 	// แปลงข้อมูลผู้ป่วยให้มีรูปแบบเหมาะสมสำหรับการส่งกลับ
 	for _, patient := range patients {
 		patientList = append(patientList, gin.H{
-			"id":            patient.ID,
-			"nation_id":     patient.NationID,
-			"first_name":    patient.FirstName,
-			"last_name":     patient.LastName,
-			"date_of_birth": patient.DateOfBirth,
-			"address":       patient.Address,
-			"phone_number":  patient.PhoneNumber,
-			"gender": gin.H{
+			"ID":            patient.ID,
+			"NationID":     patient.NationID,
+			"FirstName":    patient.FirstName,
+			"LastName":     patient.LastName,
+			"DateOfBirth": patient.DateOfBirth,
+			"Address":       patient.Address,
+			"PhoneNumber":  patient.PhoneNumber,
+			"Gender": gin.H{
 			"id":   patient.Gender.ID,
 			"name": patient.Gender.GenderName,
 			},
-			"blood_group": gin.H{
+			"BloodGroup": gin.H{
 				"id":   patient.BloodGroup.ID,
 				"name": patient.BloodGroup.BloodGroup,
 			},
-			"patient_picture": patient.PatientPicture, // สามารถเป็น nil ได้
-			"diseases": func() []gin.H {
+			"PatientPicture": patient.PatientPicture, // สามารถเป็น nil ได้
+			"Diseases": func() []gin.H {
 				var diseases []gin.H
 				for _, disease := range patient.Diseases {
 					diseases = append(diseases, gin.H{
@@ -198,7 +258,7 @@ func ListPatient(c *gin.Context) {
 				}
 				return diseases
 			}(),
-			"drugs": func() []gin.H {
+			"Drug": func() []gin.H {
 				var drugs []gin.H
 				for _, drug := range patient.Drug {
 					drugs = append(drugs, gin.H{

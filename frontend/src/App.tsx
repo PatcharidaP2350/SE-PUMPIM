@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AddTakeAHistory2 from './pages/TakeAHistory/AddTakeAHistory2/takeahistory2';
+import AddTakeAHistory from './pages/TakeAHistory/AddTakeAHistory/takeahistory1';
+import SaveTakeAHistory from './pages/TakeAHistory/SaveTakeAHistory/saveahistory';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -33,7 +35,7 @@ function App() {
 
   <Router>
         <Routes>
-          <Route path="/" element={<AddTakeAHistory2 />} />
+          <Route path="/" element={<SaveTakeAHistory />} />
           {/* เพิ่ม route อื่นๆ */}
         </Routes>
       </Router>

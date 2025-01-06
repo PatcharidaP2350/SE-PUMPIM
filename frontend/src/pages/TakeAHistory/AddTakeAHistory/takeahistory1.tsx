@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Layout, Input, Button, Form, Select, Row, Col, message, Avatar } from 'antd';
 import './takeahistory1.css'; // ไฟล์ CSS สำหรับการตกแต่ง
@@ -13,7 +14,7 @@ const AddTakeAHistory: React.FC = () => {
   const [form] = Form.useForm();
     const [diseases, setDiseases] = useState<{ ID: string; disease_name: string }[]>([]);
     const [patient, setPatient] = useState<PatientInterface | null>(null);
-    const employeeId = Number(localStorage.getItem("id"));
+    // const employeeId = Number(localStorage.getItem("id"));
     const { id } = useParams<{ id: any }>();
     const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", 
     "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"]
@@ -24,6 +25,7 @@ const AddTakeAHistory: React.FC = () => {
 
     const [formData, setFormData] = useState({ Weight: 0, Height: 0 });
       const getPatientIDfromSearch = (patient: PatientInterface) => {
+        console.log(patient);
         if (patient) {
           return patient.ID;  // ดึงค่า ID ของ Patient
         }
@@ -31,16 +33,20 @@ const AddTakeAHistory: React.FC = () => {
       };
     
    const handleSearch = async (nation_id: string) => {
+    console.log(nation_id)
        const res = await GetPatientByNationId(nation_id);
        if (res) {
          setPatient(res.data);
+         console.log(res.data.id);
          const patientID = getPatientIDfromSearch(res.data);  // ดึง ID จาก Patient
          console.log(patientID);  // แสดงผล ID ของ Patient
+         console.log(patient?.ID);  // แสดงผล ID ของ Patient
        }
      };
   
    const onFinish = async (values: TakeAHistoryInterface) => {
        // console.log(employeeId);
+       console.log(patient)
        console.log("Form values:", values);
        const dateString = values.last_menstruation_date
        const date = new Date(`${dateString}T00:00:00Z`)
@@ -278,7 +284,8 @@ const AddTakeAHistory: React.FC = () => {
                 <Col span={3} offset={1}>
                   <Form.Item 
                   label="ค่าความดันขณะหัวใจคลายตัว (mmHg)" 
-                  name="diastolic_blood_pressure">
+                  name="diastolic_blood_pressure"
+                  rules={[{ required: true, message: "กรุณาเลือกข้อมูล" }]}>
                     <Input type="number" placeholder="กรอกค่าความดัน" />
                   </Form.Item>
                 </Col>

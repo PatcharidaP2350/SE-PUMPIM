@@ -50,8 +50,8 @@ func EmployeeSignin(c *gin.Context) {
 		SecretKey:       config.GetSecretKey(),  // ใช้คีย์จาก config
 		Issuer:          "AuthService",
 		ExpirationHours: 24,  // ไม่ใช้ชั่วโมง
-		ExpirationMinute: 0,  // ตั้งให้หมดอายุใน 10 นาที
-		ExpirationSeconds: 0, // ไม่ใช้วินาที
+		// ExpirationMinute: 0,  // ตั้งให้หมดอายุใน 10 นาที
+		// ExpirationSeconds: 0, // ไม่ใช้วินาที
 	}
 	
 

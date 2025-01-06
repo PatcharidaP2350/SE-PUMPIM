@@ -13,47 +13,47 @@ func TestWeight(t *testing.T) {
 
 	g := NewGomegaWithT(t)
 
-	bloodgroup := entity.BloodGroup{
-		BloodGroup:"A+",
-	}
-	employee := entity.Employee{
-		FirstName:           "John",
-		LastName:            "Doe",
-		DateOfBirth:         time.Now().AddDate(-30, 0, 0),
-		Email:               "john.doe2@example.com",
-		Phone:               "0812345678",
-		Address:             "123 Main St",
-		Username:            "johndoe",
-		ProfessionalLicense: "12345",
-		Graduate:            "Bachelor's Degree",
-		NationalID:          "1234567890123",
-		InfoConfirm:         true,
-		FeedbackMessage:     "Great work!",
-		StatusExpiration:    time.Now().AddDate(0, 6, 0),
-		GenderID:            1,
-		PositionID:          1,
-		DepartmentID:        1,
-		StatusID:            1,
-		SpecialistID:        1,
-		BloodGroupID:        1,
-		Diseases:            []entity.Disease{}, // Empty diseases list
-		Profile:             "Experienced developer",
-		Password:            "securepassword",
-		ResetToken:          "123e4567-e89b-12d3-a456-426614174000",
-		ResetTokenExpiry:    time.Now().Add(24 * time.Hour),
-		Status: 			 status,
-		Gender:   			 gender,		
-		Position:   		 position,
-		Department: 		 department,
-		Specialist:  		 specialist,
-		BloodGroup: 		 bloodgroup,			
-	}
-	disease1 := entity.Disease{
-		DiseaseName: "Hypertension",
-	}
-	disease2 := entity.Disease{
-		DiseaseName: "Diabetes",
-	}
+	// bloodgroup := entity.BloodGroup{
+	// 	BloodGroup:"A+",
+	// }
+	// employee := entity.Employee{
+	// 	FirstName:           "John",
+	// 	LastName:            "Doe",
+	// 	DateOfBirth:         time.Now().AddDate(-30, 0, 0),
+	// 	Email:               "john.doe2@example.com",
+	// 	Phone:               "0812345678",
+	// 	Address:             "123 Main St",
+	// 	Username:            "johndoe",
+	// 	ProfessionalLicense: "12345",
+	// 	Graduate:            "Bachelor's Degree",
+	// 	NationalID:          "1234567890123",
+	// 	InfoConfirm:         true,
+	// 	FeedbackMessage:     "Great work!",
+	// 	StatusExpiration:    time.Now().AddDate(0, 6, 0),
+	// 	GenderID:            1,
+	// 	PositionID:          1,
+	// 	DepartmentID:        1,
+	// 	StatusID:            1,
+	// 	SpecialistID:        1,
+	// 	BloodGroupID:        1,
+	// 	Diseases:            []entity.Disease{}, // Empty diseases list
+	// 	Profile:             "Experienced developer",
+	// 	Password:            "securepassword",
+	// 	ResetToken:          "123e4567-e89b-12d3-a456-426614174000",
+	// 	ResetTokenExpiry:    time.Now().Add(24 * time.Hour),
+	// 	Status: 			 status,
+	// 	Gender:   			 gender,		
+	// 	Position:   		 position,
+	// 	Department: 		 department,
+	// 	Specialist:  		 specialist,
+	// 	BloodGroup: 		 bloodgroup,			
+	// }
+	// disease1 := entity.Disease{
+	// 	DiseaseName: "Hypertension",
+	// }
+	// disease2 := entity.Disease{
+	// 	DiseaseName: "Diabetes",
+	// }
 
 	t.Run(`weight is required`, func(t *testing.T) {
 		take_a_history := entity.TakeAHistory{

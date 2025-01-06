@@ -41,10 +41,10 @@ func ResetPasswordController(c *gin.Context) {
 		return
 	}
 	//resetExpiry := time.Now().Add(15 * time.Minute)
-	resetExpiry := time.Now().Add(5 * time.Minute)
+	// resetExpiry := time.Now().Add(5 * time.Minute)
 	// บันทึก ResetToken และ ResetTokenExpiry ลงในฐานข้อมูล
-	employee.ResetToken = resetToken
-	employee.ResetTokenExpiry = resetExpiry
+	// employee.ResetToken = resetToken
+	// employee.ResetTokenExpiry = resetExpiry
 	if err := db.Save(&employee).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "ไม่สามารถบันทึกโทเค็นรีเซ็ตรหัสผ่านได้"})
 		return
@@ -215,10 +215,10 @@ func ValidateResetTokenController(c *gin.Context) {
 	}
 
 	// ตรวจสอบเวลาหมดอายุ
-	if time.Now().After(employee.ResetTokenExpiry) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "โทเค็นหมดอายุแล้ว"})
-		return
-	}
+	// if time.Now().After(employee.ResetTokenExpiry) {
+	// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "โทเค็นหมดอายุแล้ว"})
+	// 	return
+	// }
 
 	// สร้าง JWT Token
 	jwtWrapper := services.JwtWrapper{

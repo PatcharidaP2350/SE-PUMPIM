@@ -277,45 +277,45 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	// Update only fields that are provided in the input
-	if updatedData.FirstName != nil {
-		existingEmployee.FirstName = *updatedData.FirstName
-	}
-	if updatedData.LastName != nil {
-		existingEmployee.LastName = *updatedData.LastName
-	}
-	if updatedData.FeedbackMessage != nil {
-		// ตรวจสอบว่าค่า FeedbackMessage เป็น "confirm" หรือไม่
-		if *updatedData.FeedbackMessage == "confirm" {
-			existingEmployee.FeedbackMessage = ""  // หรือ "" ถ้าต้องการให้เป็น string ว่าง
-		} else {
-			existingEmployee.FeedbackMessage = *updatedData.FeedbackMessage
-		}
-	}
+	// // Update only fields that are provided in the input
+	// if updatedData.FirstName != nil {
+	// 	existingEmployee.FirstName = *updatedData.FirstName
+	// }
+	// if updatedData.LastName != nil {
+	// 	existingEmployee.LastName = *updatedData.LastName
+	// }
+	// if updatedData.FeedbackMessage != nil {
+	// 	// ตรวจสอบว่าค่า FeedbackMessage เป็น "confirm" หรือไม่
+	// 	if *updatedData.FeedbackMessage == "confirm" {
+	// 		existingEmployee.FeedbackMessage = ""  // หรือ "" ถ้าต้องการให้เป็น string ว่าง
+	// 	} else {
+	// 		existingEmployee.FeedbackMessage = *updatedData.FeedbackMessage
+	// 	}
+	// }
 	
 		
 		
-	if updatedData.StatusExpiration != nil { 
-		// เปลี่ยนฟอร์แมตเป็นรองรับโซนเวลาที่แตกต่างจาก UTC เช่น +07:00
-		parsedDate, err := time.Parse("2006-01-02T15:04:05-07:00", *updatedData.StatusExpiration)
-		if err != nil {
-			//fmt.Println("Invalid date format:", *updatedData.StatusExpiration)
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format, expected ISO8601"})
-			return
-		}
-		existingEmployee.StatusExpiration = parsedDate
-	}
+	// if updatedData.StatusExpiration != nil { 
+	// 	// เปลี่ยนฟอร์แมตเป็นรองรับโซนเวลาที่แตกต่างจาก UTC เช่น +07:00
+	// 	parsedDate, err := time.Parse("2006-01-02T15:04:05-07:00", *updatedData.StatusExpiration)
+	// 	if err != nil {
+	// 		//fmt.Println("Invalid date format:", *updatedData.StatusExpiration)
+	// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid date format, expected ISO8601"})
+	// 		return
+	// 	}
+	// 	existingEmployee.StatusExpiration = parsedDate
+	// }
 
-	if updatedData.StatusExpiration == nil { 
-		// เปลี่ยนฟอร์แมตเป็นรองรับโซนเวลาที่แตกต่างจาก UTC เช่น +07:00
-		noTime, err := time.Parse("2006-01-02 15:04:05-07:00", "0001-01-01 00:00:00+00:00")
-		if err != nil {
-			fmt.Println("Invalid time format:", err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid time format"})
-			return
-		}
-		existingEmployee.StatusExpiration = noTime
-	}
+	// if updatedData.StatusExpiration == nil { 
+	// 	// เปลี่ยนฟอร์แมตเป็นรองรับโซนเวลาที่แตกต่างจาก UTC เช่น +07:00
+	// 	noTime, err := time.Parse("2006-01-02 15:04:05-07:00", "0001-01-01 00:00:00+00:00")
+	// 	if err != nil {
+	// 		fmt.Println("Invalid time format:", err)
+	// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid time format"})
+	// 		return
+	// 	}
+	// 	existingEmployee.StatusExpiration = noTime
+	// }
 	
 	
 	if updatedData.DateOfBirth != nil {
@@ -464,8 +464,8 @@ func ResetPassword(c *gin.Context) {
 
     // อัปเดตรหัสผ่าน และล้าง ResetToken
     existingEmployee.Password = hashedPassword
-    existingEmployee.ResetToken = ""               // Clear ResetToken
-    existingEmployee.ResetTokenExpiry = time.Time{} // Clear ResetTokenExpiry
+    // existingEmployee.ResetToken = ""               // Clear ResetToken
+    // existingEmployee.ResetTokenExpiry = time.Time{} // Clear ResetTokenExpiry
 
     // บันทึกการเปลี่ยนแปลงในฐานข้อมูล
     if err := db.Save(&existingEmployee).Error; err != nil {

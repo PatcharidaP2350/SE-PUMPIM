@@ -25,13 +25,13 @@ func CreateTakeAHistory(c *gin.Context) {
 		SystolicBloodPressure    uint       `json:"systolic_blood_pressure" binding:"required"`
 		DiastolicBloodPressure   uint       `json:"diastolic_blood_pressure" binding:"required"`
 		PulseRate                uint       `json:"pulse_rate" binding:"required"`
-		Smoking                  bool     `json:"smoking" binding:"required"`
-		DrinkAlcohol             bool     `json:"drink_alcohol" binding:"required"`
-		QueueNumber    string    `json:"queue_number" binding:"required"`  
+		Smoking                  bool     `json:"smoking"`
+		DrinkAlcohol             bool     `json:"drink_alcohol"`
+		// QueueNumber    string    `json:"queue_number"`  
 		//Date      time.Time    `json:"date" binding:"required"`     
-		QueueStatus         string    `json:"queue_status"  binding:"required"`
-		LastMenstruationDate     time.Time  `json:"last_menstruation_date" binding:"required"`
-		PatientID                uint       `json:"patient_id" binding:"required"`
+		// QueueStatus         string    `json:"queue_status"`
+		LastMenstruationDate     time.Time  `json:"last_menstruation_date"`
+		PatientID                uint       `json:"patient_id"`
 		EmployeeID               uint       `json:"employee_id" binding:"required"`
 		AppointmentID			 *uint     `json:"appointment_id"`
 	}
@@ -54,8 +54,6 @@ func CreateTakeAHistory(c *gin.Context) {
 		Smoking:                 input.Smoking,
 		DrinkAlcohol:            input.DrinkAlcohol,
 		LastMenstruationDate:    input.LastMenstruationDate,
-		QueueNumber: 			 input.QueueNumber,
-		QueueStatus:			input.QueueStatus,
 		
 		MedicalRecordsID:       nil, // ปรับเปลี่ยนตามความเหมาะสม
 		Date:                    time.Now(),
