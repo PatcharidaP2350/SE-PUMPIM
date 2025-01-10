@@ -47,12 +47,9 @@ func main() {
 		protected.PATCH("/patients/:id", controller.UpdatePatient) // เพิ่มเส้นทาง UpdatePatient
 		protected.PATCH("/updatepatiendisease", controller.UpdatePatientDisease)
 
-		// // เส้นทาง CreateQueue
-		// protected.POST("/queues", controller.CreateQueue)
-		// // เส้นทาง GetQueue
-		// protected.GET("/queues/:id", controller.GetQueue)
-		// // เส้นทาง ListQueue
-		// protected.GET("/queues", controller.ListQueue)
+		protected.POST("/appointment", controller.CreateAppointment)
+		protected.GET("/appointment/:id", controller.GetAppointmentByID)
+
 
 		// เส้นทาง CreateTakeAHistory
 		protected.POST("/take_a_history", controller.CreateTakeAHistory)

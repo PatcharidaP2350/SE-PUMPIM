@@ -5,12 +5,14 @@ import './updatehistory.css'; // ไฟล์ CSS สำหรับการต
 import { useParams } from 'react-router-dom';
 import { TakeAHistoryInterface } from '../../../interface/ITakeAHistory';
 import { PatientInterface } from '../../../interface/IPatient';
-import { apiUrl, CreateTakeAHistory, getDiseases, GetPatientByNationId,updatePatientDisease} from '../../../service/https';
+import { apiUrl, CreateTakeAHistory, getDiseases, GetPatientByNationId,updatePatientDisease, UpdateTakeAHistoryById} from '../../../service/https';
 
-const { Header, Content } = Layout;
-const { Option } = Select;
 
-const UpdateTakeAHistory: React.FC = () => {
+interface PatientForm {
+  patiendID: number;
+
+}
+const UpdateTakeAHistory: React.FC<PatientForm> = ({patiendID}) => {
   const [form] = Form.useForm();
     const [diseases, setDiseases] = useState<{ ID: string; disease_name: string }[]>([]);
     const [patient, setPatient] = useState<PatientInterface | null>(null);
@@ -62,10 +64,10 @@ const UpdateTakeAHistory: React.FC = () => {
        values.drink_alcohol = Boolean(values.drink_alcohol)
        values.smoking = Boolean(values.smoking)
        values.employee_id = 1
-   
+
        try {
          
-         const response = await CreateTakeAHistory(values);
+         const response = await UpdateTakeAHistoryById(patiendID,values);
          console.log(response);
    
          if (response.status === 201) {
@@ -117,20 +119,18 @@ const UpdateTakeAHistory: React.FC = () => {
     }, [id]);
 
   return (
-    <Layout 
-    className="AddTakeAHistory"
-    style={{
-      height: "100vh",
-      backgroundColor: "#e2dfe4", // สีพื้นหลังของ Layout
-      margin: 0,
-      padding: 0,
-      width: "100%",
-    }}
-      >
-      <Header
+    <div 
+      className="AddTakeAHistory"
+      style={{
+        height: "100vh",
+        margin: 0,
+        padding: 0,
+        width: "100%",
+      }}
+    >
+      <div
         style={{
-          backgroundColor: "#e2dfe4", // สีพื้นหลังของ Header
-          color: "#5752A7",
+          color: "#1860C9",
           display: "flex", // ใช้ Flexbox
           alignItems: "center", // จัดตำแหน่งแนวตั้ง
           justifyContent: "space-between", // จัดตำแหน่งแบบซ้าย-ขวา
@@ -140,54 +140,24 @@ const UpdateTakeAHistory: React.FC = () => {
       >
           <div
             style={{
-              marginBottom: "10px", // เพิ่มระยะห่างระหว่างข้อความและกล่องค้นหา
-              marginLeft: "10px",
+              marginTop: "10px",
+              marginBottom: "20px", // เพิ่มระยะห่างระหว่างข้อความและกล่องค้นหา
+              marginLeft: "35px",
             }}
           >
             ซักประวัติ
-          </div>
-          <div
-            style={{
-              width: "70%", // กำหนดความกว้างของกล่องค้นหา
-              marginBottom: "-100px",
-              marginLeft: "-150px",
-              marginRight: "300px",
-            }}
-          >
-            <Input.Search 
+            
+            <Input.Search  
+              style={{ marginLeft: "10px",
+                width: "80%"
+               }}
               placeholder="กรอกเลขประจำตัว" 
               className="input-box"
               onSearch={(value) => handleSearch(value)} // ใส่ฟังก์ชันสำหรับค้นหา
             />
           </div>
-          <div
-            style={{
-              marginRight: "20px",
-              marginBottom: "-50px",
-            }}
-          >
-          </div>
-        </Header>
-        <Content 
-          style={{
-            display: "flex",
-            justifyContent: "center", // จัดตำแหน่งกล่องให้อยู่กลางหน้าจอในแนวนอน
-            alignItems: "flex-end", // จัดตำแหน่งกล่องให้อยู่กลางหน้าจอในแนวตั้ง
-            backgroundColor: "#e2dfe4", // สีพื้นหลังของ Content
-            height: "calc(100vh - 120px)", // คำนวณความสูงโดยลบ Header และ Footer
-            padding: "20px",
-          }}
-        >
-          <div 
-            style={{
-              backgroundColor: "white", // สีพื้นหลังของกล่อง
-              width: "99.5%", // กำหนดความกว้างของกล่อง
-              height: "96%", // กำหนดความสูงของกล่อง
-              padding: "30px", // ระยะห่างด้านใน
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // เพิ่มเงาให้ดูสวยงาม
-            }}
-          >
-          <Form
+        </div>
+        <Form
               form={form}
               layout="vertical"
               onFinish={onFinish}
@@ -369,6 +339,7 @@ const UpdateTakeAHistory: React.FC = () => {
                       value: d.ID,
                       }))}
                       onChange={(value) => console.log("Updated disease allergies:", value)}
+                      placeholder="เลือกโรคประจำตัว"
                     />
                   </Form.Item>
                 </Col>
@@ -391,9 +362,7 @@ const UpdateTakeAHistory: React.FC = () => {
                 </Button>
               </div>
             </Form>
-          </div>
-        </Content>
-    </Layout>
+    </div>
   );
 };
 

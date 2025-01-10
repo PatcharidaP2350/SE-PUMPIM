@@ -14,7 +14,7 @@ import (
 
 
 func CreateTakeAHistory(c *gin.Context) {
-	fmt.Println("Creating or Updating Medical Record")
+	fmt.Println("Creating or Updating TakeAHistory")
 	db := config.DB()
 
 	// กำหนดข้อมูลที่รับจาก Request
@@ -27,9 +27,6 @@ func CreateTakeAHistory(c *gin.Context) {
 		PulseRate                uint       `json:"pulse_rate" binding:"required"`
 		Smoking                  bool     `json:"smoking"`
 		DrinkAlcohol             bool     `json:"drink_alcohol"`
-		// QueueNumber    string    `json:"queue_number"`  
-		//Date      time.Time    `json:"date" binding:"required"`     
-		// QueueStatus         string    `json:"queue_status"`
 		LastMenstruationDate     time.Time  `json:"last_menstruation_date"`
 		PatientID                uint       `json:"patient_id"`
 		EmployeeID               uint       `json:"employee_id" binding:"required"`

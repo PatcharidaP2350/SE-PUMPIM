@@ -75,7 +75,7 @@ const AddPatient: React.FC = () => {
         flexDirection: 'column', 
         alignItems: 'center', 
         fontFamily: 'Arial, sans-serif' }}
-        >
+    >
 
       {/* กล่องค้นหา */}
       <div 
@@ -107,15 +107,15 @@ const AddPatient: React.FC = () => {
             width: '68%', 
             marginBottom: '20px' }}
         >
-        <Avatar
-          src={patient?.PatientPicture != null ? `${apiUrl}/${patient?.PatientPicture}` : (patient?.Gender?.gender_name === "Male" ? "./Avatar/man.png" : "./Avatar/woman.png")}  // URL รูปภาพที่คุณต้องการ
-          alt="avatar"
-          size={70} // ขนาดของ Avatar
-          style={{
-           marginLeft: '50px',
-           marginTop: '-10px'
-          }}
-        />
+          <Avatar
+            src={patient?.PatientPicture != null ? `${apiUrl}/${patient?.PatientPicture}` : (patient?.Gender?.gender_name === "Male" ? "./Avatar/man.png" : "./Avatar/woman.png")}  // URL รูปภาพที่คุณต้องการ
+            alt="avatar"
+            size={70} // ขนาดของ Avatar
+            style={{
+            marginLeft: '50px',
+            marginTop: '-10px'
+            }}
+          />
           <div 
             style={{ paddingLeft: '0px' }}
           >
@@ -143,94 +143,6 @@ const AddPatient: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* ส่วนข้อมูลเพิ่มเติม */}
-      <div 
-        style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          width: '70%' }}
-      >
-        <div 
-          style={{ 
-            background: 'white', 
-            borderRadius: '10px', 
-            padding: '15px', 
-            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)', 
-            width: '48%',
-            marginRight: '30px' }}
-        >
-          <h3>ข้อมูลทั่วไป</h3>
-            <Form style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-              <Form style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                <Form.Item label="น้ำหนัก (กก.)" name="GenderID" style={{ width: '100%' }}>
-                  <div>{patient?.Gender?.gender_name}</div>
-                </Form.Item>
-                <Form.Item label="ส่วนสูง (ซม.)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
-                </Form.Item>
-                <Form.Item label="ค่าความดันขณะหัวใจบีบตัว (mmHg)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
-                </Form.Item>
-                <Form.Item label="ค่าความดันขณะหัวใจคลายตัว (mmHg)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
-                </Form.Item>
-                <Form.Item label="อัตราการเต้นของหัวใจ (bpm)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
-                </Form.Item>
-              </Form>
-                {(() => {
-                    if (patient?.Gender?.gender_name === "Male" ) {
-                      return <>
-                      <Form.Item label="ดื่ม" name="drink_alcohol" >
-                        <div>{patient?.Gender?.gender_name}</div>
-                      </Form.Item></>
-                    }else{
-                      return <>
-                        <Form.Item
-                          label="ประจำเดือนครั้งล่าสุด"
-                          name="last_menstruation_date"
-                          >
-                          <div>{patient?.Gender?.gender_name}</div>
-                        </Form.Item>
-                        <Form.Item
-                          label="ดื่ม"
-                          name="drink_alcohol"
-                        >
-                          <div>{patient?.Gender?.gender_name}</div>
-                        </Form.Item>
-                        </>
-                    }
-                  })()}
-              <Form.Item label="สูบบุหรี่" name="DateOfBirth" style={{ width: '100%' }}> 
-                <div>{patient? DateFormat:""}</div>
-              </Form.Item>
-              <Form.Item label="โรคประจำตัว" name="DateOfBirth" style={{ width: '100%' }}> 
-                <div>{patient? DateFormat:""}</div>
-              </Form.Item>
-            </Form>
-          {/* เพิ่มข้อมูลทั่วไปที่นี่ */}
-        </div>
-        <div 
-          style={{ 
-            background: 'white', 
-            borderRadius: '10px', 
-            padding: '15px', 
-            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)', 
-            width: '48%' }}
-        >
-          <h3>อาการเบื้องต้น</h3>
-            <Form style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-              <Form.Item name="DateOfBirth" style={{ width: '100%' }}> 
-                <div>{patient? DateFormat:""}</div>
-              </Form.Item>
-              
-            </Form>
-          {/* เพิ่มข้อมูลอาการเบื้องต้นที่นี่ */}
-        </div>
-      </div>
-
-      {/* ปุ่ม */}
       <div 
         style={{ 
           display: 'flex', 

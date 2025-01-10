@@ -6,6 +6,7 @@ import AddTakeAHistory2 from './pages/TakeAHistory/AddTakeAHistory2/takeahistory
 import SaveTakeAHistory from './pages/TakeAHistory/SaveTakeAHistory/saveahistory'
 import UpdateTakeAHistory from './pages/TakeAHistory/UpdateTakeAHistory/UpdateTakeAHistory'
 import AddPatient from './pages/TakeAHistory/CreatePatient/AddPatient'
+import CreateAppointment from './pages/Appoinment/CreateAppointment/CreateAppointment'
 // import './index.css'
 // import App from './App.tsx'
 
@@ -13,6 +14,7 @@ import AddPatient from './pages/TakeAHistory/CreatePatient/AddPatient'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-    <AddPatient/>
+    <CreateAppointment/>
+    {/* <AddTakeAHistory2/> */}
   </StrictMode>
 )

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Form, Avatar} from 'antd';
+import { Input, Form, Avatar, Button} from 'antd';
 import './saveahistory.css'; // ไฟล์ CSS สำหรับการตกแต่ง
 import { useParams } from 'react-router-dom';
 import { TakeAHistoryInterface } from '../../../interface/ITakeAHistory';
 import { PatientInterface } from '../../../interface/IPatient';
-import { apiUrl,   GetPatientByNationId} from '../../../service/https';
+import { apiUrl, GetPatientByNationId, GetTakeAHistoryById} from '../../../service/https';
 
 
 
@@ -12,6 +12,7 @@ const SaveTakeAHistory: React.FC = () => {
   const [form] = Form.useForm();
    
     const [patient, setPatient] = useState<PatientInterface | null>(null);
+    const [takeahistory, setTakeAHistory] = useState<TakeAHistoryInterface | null>(null);
     // const employeeId = Number(localStorage.getItem("id"));
     const { id } = useParams<{ id: any }>();
     const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", 
@@ -42,26 +43,27 @@ const SaveTakeAHistory: React.FC = () => {
        }
      };
   
-   const onFinish = async (values: TakeAHistoryInterface) => {
-       // console.log(employeeId);
-       console.log(patient)
-       console.log("Form values:", values);
-       const dateString = values.last_menstruation_date
-       const date = new Date(`${dateString}T00:00:00Z`)
-       // สร้างข้อมูลสำหรับอัปเดต Patient
+
+  //  const onFinish = async (values: TakeAHistoryInterface) => {
+  //      // console.log(employeeId);
+  //      console.log(patient)
+  //      console.log("Form values:", values);
+  //      const dateString = values.last_menstruation_date
+  //      const date = new Date(`${dateString}T00:00:00Z`)
+  //      // สร้างข้อมูลสำหรับอัปเดต Patient
    
-       values.last_menstruation_date = date
-       values.weight = Number(values.weight)
-       values.height = Number(values.height)
-       values.systolic_blood_pressure = Number(values.systolic_blood_pressure)
-       values.diastolic_blood_pressure = Number(values.diastolic_blood_pressure)
-       values.pulse_rate = Number(values.pulse_rate)
-       values.patient_id = patient?.ID
-       values.drink_alcohol = Boolean(values.drink_alcohol)
-       values.smoking = Boolean(values.smoking)
-       values.employee_id = 1
+  //      values.last_menstruation_date = date
+  //      values.weight = Number(values.weight)
+  //      values.height = Number(values.height)
+  //      values.systolic_blood_pressure = Number(values.systolic_blood_pressure)
+  //      values.diastolic_blood_pressure = Number(values.diastolic_blood_pressure)
+  //      values.pulse_rate = Number(values.pulse_rate)
+  //      values.patient_id = patient?.ID
+  //      values.drink_alcohol = Boolean(values.drink_alcohol)
+  //      values.smoking = Boolean(values.smoking)
+  //      values.employee_id = 1
    
-     };
+  //    };
 
   useEffect(() => {
     }, [id]);
@@ -174,27 +176,27 @@ const SaveTakeAHistory: React.FC = () => {
           <h3>ข้อมูลทั่วไป</h3>
             <Form style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
               <Form style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                <Form.Item label="น้ำหนัก (กก.)" name="GenderID" style={{ width: '100%' }}>
-                  <div>{patient?.Gender?.gender_name}</div>
+                <Form.Item label="น้ำหนัก (กก.)" name="weight" style={{ width: '100%' }}>
+                  <div>{takeahistory?.weight}</div>
                 </Form.Item>
-                <Form.Item label="ส่วนสูง (ซม.)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
+                <Form.Item label="ส่วนสูง (ซม.)" name="height" style={{ width: '100%' }}> 
+                  <div>{takeahistory?.height}</div>
                 </Form.Item>
-                <Form.Item label="ค่าความดันขณะหัวใจบีบตัว (mmHg)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
+                <Form.Item label="ค่าความดันขณะหัวใจบีบตัว (mmHg)" name="systolic_blood_pressure" style={{ width: '100%' }}> 
+                  <div>{takeahistory?.systolic_blood_pressure}</div>
                 </Form.Item>
-                <Form.Item label="ค่าความดันขณะหัวใจคลายตัว (mmHg)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
+                <Form.Item label="ค่าความดันขณะหัวใจคลายตัว (mmHg)" name="diastolic_blood_pressure" style={{ width: '100%' }}> 
+                  <div>{takeahistory?.diastolic_blood_pressure}</div>
                 </Form.Item>
-                <Form.Item label="อัตราการเต้นของหัวใจ (bpm)" name="DateOfBirth" style={{ width: '100%' }}> 
-                  <div>{patient? DateFormat:""}</div>
+                <Form.Item label="อัตราการเต้นของหัวใจ (bpm)" name="pulse_rate" style={{ width: '100%' }}> 
+                  <div>{takeahistory?.pulse_rate}</div>
                 </Form.Item>
               </Form>
                 {(() => {
                     if (patient?.Gender?.gender_name === "Male" ) {
                       return <>
                       <Form.Item label="ดื่ม" name="drink_alcohol" >
-                        <div>{patient?.Gender?.gender_name}</div>
+                        <div>{takeahistory?.drink_alcohol}</div>
                       </Form.Item></>
                     }else{
                       return <>
@@ -202,21 +204,21 @@ const SaveTakeAHistory: React.FC = () => {
                           label="ประจำเดือนครั้งล่าสุด"
                           name="last_menstruation_date"
                           >
-                          <div>{patient?.Gender?.gender_name}</div>
+                          <div>{takeahistory?.last_menstruation_date}</div>
                         </Form.Item>
                         <Form.Item
                           label="ดื่ม"
                           name="drink_alcohol"
                         >
-                          <div>{patient?.Gender?.gender_name}</div>
+                          <div>{takeahistory?.drink_alcohol}</div>
                         </Form.Item>
                         </>
                     }
                   })()}
-              <Form.Item label="สูบบุหรี่" name="DateOfBirth" style={{ width: '100%' }}> 
-                <div>{patient? DateFormat:""}</div>
+              <Form.Item label="สูบบุหรี่" name="smoking" style={{ width: '100%' }}> 
+                <div>{takeahistory?.smoking}</div>
               </Form.Item>
-              <Form.Item label="โรคประจำตัว" name="DateOfBirth" style={{ width: '100%' }}> 
+              <Form.Item label="โรคประจำตัว" name="disease_name" style={{ width: '100%' }}> 
                 <div>{patient? DateFormat:""}</div>
               </Form.Item>
             </Form>
@@ -232,8 +234,8 @@ const SaveTakeAHistory: React.FC = () => {
         >
           <h3>อาการเบื้องต้น</h3>
             <Form style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-              <Form.Item name="DateOfBirth" style={{ width: '100%' }}> 
-                <div>{patient? DateFormat:""}</div>
+              <Form.Item name="preliminary_symptoms" style={{ width: '100%' }}> 
+                <div>{takeahistory?.preliminary_symptoms}</div>
               </Form.Item>
               
             </Form>
@@ -243,13 +245,17 @@ const SaveTakeAHistory: React.FC = () => {
 
       {/* ปุ่ม */}
       <div 
-        style={{ 
+        style={{  
           display: 'flex', 
           gap: '10px', 
           marginTop: '20px' }}
       >
-        <button style={{ padding: '10px 20px', border: 'none', borderRadius: '5px', fontSize: '16px', cursor: 'pointer', backgroundColor: '#5752A7', color: 'white' }}>บันทึก</button>
-        <button style={{ padding: '10px 20px', border: '1px solid #5752A7', borderRadius: '5px', fontSize: '16px', cursor: 'pointer', backgroundColor: 'white', color: '#5752A7' }}>แก้ไขประวัติการรักษา</button>
+        <Button type="primary" htmlType="submit" style={{ marginRight: '10px', border: '1px solid #5752A7' , backgroundColor: '#5752A7',padding: '10px 20px' , borderRadius: '5px', fontSize: '16px',}}>
+          แก้ไขประวัติการรักษา
+        </Button>
+        <Button htmlType="button" style={{ marginRight: '10px', border: '1px solid #5752A7' ,backgroundColor: 'white',padding: '10px 20px' , borderRadius: '5px', fontSize: '16px', color: '#5752A7'}} onClick={() => form.resetFields()}>
+          บันทึก
+        </Button>
       </div>
     </div>
   );

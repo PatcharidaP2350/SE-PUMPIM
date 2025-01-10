@@ -8,8 +8,6 @@ export interface TakeAHistoryInterface {
   pulse_rate?: number; // อัตราชีพจร
   smoking?: boolean; // การสูบบุหรี่
   drink_alcohol?: boolean; // การดื่มแอลกอฮอล์ 
-  // DATE?: Date; // วันที่บันทึก
-  // QueueStatus?: string;
   last_menstruation_date?: Date; // วันที่มีประจำเดือนครั้งสุดท้าย
   patient_id?: number;
   employee_id?: number;

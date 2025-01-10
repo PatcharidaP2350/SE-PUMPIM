@@ -1,9 +1,10 @@
 import axios from "axios";
 import { PatientInterface } from "../../interface/IPatient";
 import { Iupdatepatientdisease, TakeAHistoryInterface } from "../../interface/ITakeAHistory";
+import { AppointmentInterface } from "../../interface/IAppointment";
 
 export const apiUrl = "http://localhost:8000"; // URL ของ Backend API
-const Authorization = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6ImRvY3RvciIsImV4cCI6MTczNjI1NTM4NCwiaXNzIjoiQXV0aFNlcnZpY2UifQ.PNboPxfwgdXkJxBbMtN31R1T-qdH0GcO1GY0U-Sfsng");
+const Authorization = ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6ImRvY3RvciIsImV4cCI6MTczNjYyNTQ3NSwiaXNzIjoiQXV0aFNlcnZpY2UifQ.i9aeHda_VvlXTwHRZRymkW8mY6N6HMwhjCcoKM29b6s");
 // const Bearer = localStorage.getItem("token_type");  //ถ้ายังไม่เซต localStorage จะดึง Disease ไม่ได้
 
 
@@ -230,9 +231,29 @@ async function updatePatientDisease(data:Iupdatepatientdisease) {
   .catch((e) => e.response);
 }
 
+async function CreateAppointment(data: AppointmentInterface) {
+  console.log("AAA",data)
+  return await axios
 
+    .post(`${apiUrl}/appointment`, data, requestOptions)
 
+    .then((res) => res)
 
+    .catch((e) => e.response);
+
+}
+
+async function GetAppointmentById(id: number) {
+
+  return await axios
+
+    .get(`${apiUrl}/appointment/${id}`, requestOptions)
+
+    .then((res) => res)
+
+    .catch((e) => e.response);
+
+}
 
 
 export {
@@ -250,7 +271,8 @@ export {
     DeleteTakeAHistoryByid,
     GetPatientVisit,
     updatePatientDisease,
-
+    CreateAppointment,
+    GetAppointmentById,
 
     getDurg,
     getDiseases,

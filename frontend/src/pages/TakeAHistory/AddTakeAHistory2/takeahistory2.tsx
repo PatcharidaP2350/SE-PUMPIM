@@ -6,8 +6,10 @@ import { TakeAHistoryInterface } from '../../../interface/ITakeAHistory';
 import { PatientInterface } from '../../../interface/IPatient';
 import { apiUrl, CreateTakeAHistory, getDiseases, GetPatientByNationId,updatePatientDisease} from '../../../service/https';
 
+import UpdateTakeAHistory from '../UpdateTakeAHistory/UpdateTakeAHistory';
+
 const { Header, Content} = Layout;
-const { Option } = Select;
+
 
 const AddTakeAHistory2: React.FC = () => {
   // const navigate = useNavigate();
@@ -22,6 +24,7 @@ const AddTakeAHistory2: React.FC = () => {
   const monthFormat = months[Number(patient?.DateOfBirth?.slice(5,7)) - 1]
   const yearFormat = [Number(patient?.DateOfBirth?.slice(0,4)) + 543]
   const DateFormat = `${Datef} ${monthFormat} ${yearFormat}`
+  const [patID, setPatID] = useState<number>(0);
  
   
   const [formData, setFormData] = useState({ Weight: 0, Height: 0 });
@@ -38,7 +41,10 @@ const AddTakeAHistory2: React.FC = () => {
     if (res) {
       setPatient(res.data);
       const patientID = getPatientIDfromSearch(res.data);  // ดึง ID จาก Patient
-      console.log(patientID);  // แสดงผล ID ของ Patient
+      console.log("patient==>",patientID);  // แสดงผล ID ของ Patient
+      // setPatID(patientID)
+      // console.log("patID==>",patID);  // แสดงผล ID ของ Patient
+
     }
   };
 
@@ -59,6 +65,8 @@ const AddTakeAHistory2: React.FC = () => {
     values.drink_alcohol = Boolean(values.drink_alcohol)
     values.smoking = Boolean(values.smoking)
     values.employee_id = 1
+
+    
 
     try {
       
@@ -116,15 +124,15 @@ const AddTakeAHistory2: React.FC = () => {
   console.log(patient?.Gender?.gender_name)
   return (
     <div
-    className="AddTakeAHistory2"
-    style={{
-      height: "100vh",
-      backgroundColor: "#e2dfe4", // สีพื้นหลังของหน้า
-      margin: 0,
-      padding: 0,
-      width: "100%",
-    }}
-  >
+      className="AddTakeAHistory2"
+      style={{
+        height: "100vh",
+        backgroundColor: "#e2dfe4", // สีพื้นหลังของหน้า
+        margin: 0,
+        padding: 0,
+        width: "100%",
+      }}
+    >
       <Header
         style={{
           backgroundColor: "#e2dfe4", // สีพื้นหลังของ Header
@@ -382,7 +390,7 @@ const AddTakeAHistory2: React.FC = () => {
               </Button>
             </div>
           </Form>
-
+          {/* <UpdateTakeAHistory patiendID={patient?.ID}/> */}
         </div>
       </Content>
     </div>

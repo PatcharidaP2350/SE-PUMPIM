@@ -698,8 +698,53 @@ fmt.Println("Database setup completed.")
 		PatientID:patient2.ID,
 		EmployeeID:EmployeeNurse.ID,
 	}  
-	db.FirstOrCreate(&TakeAHistory2, &entity.TakeAHistory{PreliminarySymptoms: "รู้สึกมีไข้ต่ำๆ มีอาการคัดจมูกหรือมีน้ำมูกใสไหลออกมาเป็นจำนวนมาก สึกไม่สบายตัวและหายใจลำบาก มักจะจามบ่อย ๆ โดยเฉพาะในช่วงเช้าหรือเมื่อเจออากาศเย็นๆ "})
+	db.FirstOrCreate(&TakeAHistory2, &entity.TakeAHistory{
+		PreliminarySymptoms: "รู้สึกมีไข้ต่ำๆ มีอาการคัดจมูกหรือมีน้ำมูกใสไหลออกมาเป็นจำนวนมาก สึกไม่สบายตัวและหายใจลำบาก มักจะจามบ่อย ๆ โดยเฉพาะในช่วงเช้าหรือเมื่อเจออากาศเย็นๆ "})
 
+	Appointment1 := entity.Appointment{
+		AppointmentDate: time.Date(2025, time.February, 15, 0, 0, 0, 0, time.UTC), // วันที่นัดหมาย
+		AppointmentTime: time.Date(2025, time.February, 15, 14, 0, 0, 0, time.UTC), // เวลานัดหมาย
+		Reason:          "ตรวจร่างกายประจำปี",                                    // เหตุผล
+		Status:          "รอการยืนยัน",                                            // สถานะ
+		Note:			 "ไม่มี",
+		MedicalRecordsID:&MedicalRecords1.ID,   
+		EmployeeID:      EmployeeDoctor.ID,                                         // เชื่อมกับแพทย์ที่รับผิดชอบ
+	}
+	
+	db.FirstOrCreate(&Appointment1, &entity.Appointment{
+		AppointmentDate: time.Date(2025, time.February, 15, 0, 0, 0, 0, time.UTC), // เงื่อนไขค้นหา
+		EmployeeID:      EmployeeDoctor.ID,                                         // ค้นหาจาก Employee ด้วย
+	})
+	
+	Appointment2 := entity.Appointment{
+		AppointmentDate: time.Date(2025, time.March, 10, 0, 0, 0, 0, time.UTC), // วันที่นัดหมาย
+		AppointmentTime: time.Date(2025, time.March, 10, 10, 0, 0, 0, time.UTC), // เวลานัดหมาย
+		Reason:          "ตรวจสุขภาพหัวใจ",                                   // เหตุผล
+		Status:          "รอตรวจ",                                         // สถานะ
+		Note:			 "ไม่มี",
+		MedicalRecordsID: nil,                                                   // ยังไม่ได้เชื่อมกับ MedicalRecords
+		EmployeeID:      EmployeeDoctor.ID,                                      // เชื่อมกับแพทย์เฉพาะทางหัวใจ
+	}
+	
+	db.FirstOrCreate(&Appointment2, &entity.Appointment{
+		AppointmentDate: time.Date(2025, time.March, 10, 0, 0, 0, 0, time.UTC), // เงื่อนไขค้นหา
+		EmployeeID:      EmployeeDoctor.ID,                                      // ค้นหาโดยแพทย์ที่เกี่ยวข้อง
+	})
+	
+	Appointment3 := entity.Appointment{
+		AppointmentDate: time.Date(2025, time.March, 10, 0, 0, 0, 0, time.UTC), // วันที่นัดหมาย
+		AppointmentTime: time.Date(2025, time.March, 10, 10, 0, 0, 0, time.UTC), // เวลานัดหมาย
+		Reason:          "ติดตามอาการในช่องท้อง",                                   // เหตุผล
+		Status:          "รอตรวจ",                                         // สถานะ
+		Note:			 "หากหายปวดท้องไม่ต้องมาตามนัดได้",
+		MedicalRecordsID: nil,                                                   // ยังไม่ได้เชื่อมกับ MedicalRecords
+		EmployeeID:      EmployeeDoctor.ID,                                      // เชื่อมกับแพทย์เฉพาะทางหัวใจ
+	}
+	
+	db.FirstOrCreate(&Appointment3, &entity.Appointment{
+		AppointmentDate: time.Date(2025, time.March, 10, 0, 0, 0, 0, time.UTC), // เงื่อนไขค้นหา
+		EmployeeID:      EmployeeDoctor.ID,                                      // ค้นหาโดยแพทย์ที่เกี่ยวข้อง
+	})
 
 	var supplier1 entity.Supplier
 	db.FirstOrCreate(&supplier1, entity.Supplier{

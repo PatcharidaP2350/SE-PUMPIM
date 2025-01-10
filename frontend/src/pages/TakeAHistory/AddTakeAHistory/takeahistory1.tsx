@@ -8,7 +8,7 @@ import { PatientInterface } from '../../../interface/IPatient';
 import { apiUrl, CreateTakeAHistory, getDiseases, GetPatientByNationId,updatePatientDisease} from '../../../service/https';
 
 const { Header, Content } = Layout;
-const { Option } = Select;
+
 
 const AddTakeAHistory: React.FC = () => {
   const [form] = Form.useForm();
@@ -38,15 +38,13 @@ const AddTakeAHistory: React.FC = () => {
        if (res) {
          setPatient(res.data);
          console.log(res.data.id);
-         const patientID = getPatientIDfromSearch(res.data);  // ดึง ID จาก Patient
+         const patientID = getPatientIDfromSearch(res.data);  // ดึง ID จาก Patien
          console.log(patientID);  // แสดงผล ID ของ Patient
          console.log(patient?.ID);  // แสดงผล ID ของ Patient
        }
      };
   
-   const onFinish = async (values: TakeAHistoryInterface) => {
-       // console.log(employeeId);
-       console.log(patient)
+   const onFinish = async (values: TakeAHistoryInterface) => { 
        console.log("Form values:", values);
        const dateString = values.last_menstruation_date
        const date = new Date(`${dateString}T00:00:00Z`)
@@ -391,6 +389,7 @@ const AddTakeAHistory: React.FC = () => {
                 </Button>
               </div>
             </Form>
+            
           </div>
         </Content>
     </Layout>
